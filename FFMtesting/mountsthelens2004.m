@@ -1,0 +1,29 @@
+%% Mount St. Helens 2004 event timeline
+
+% You need to have run the entire analysis for the 2009 Redoubt eruption
+% before this works fully
+
+    % enter timeline dates
+timeline.DateTime = datetime({'2004-Oct-01';...
+                        '2004-Oct-03';...
+                        '2004-Oct-11'});
+
+    % enter time line event descriptions
+timeline.comment = {'First Explosion',...
+               'Explosion',...
+               'Dome Growth Begins'};
+           
+% colorcode.timeline = datetime({''
+%                                 '';
+%                                 '2004-Oct-03';
+%                                 '2004-Oct-06'});...
+%                                 
+% colorcode.color_str = {'yellow';...
+%                         'orange';...
+%                         'red';
+%                         'orange'};
+% colorcode.color = {'yellow';...
+%                         'orange';...
+%                         'red';
+%                         'orange'};
+                                                                
