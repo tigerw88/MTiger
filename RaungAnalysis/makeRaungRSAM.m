@@ -10,12 +10,12 @@
 %% User Input
 
     % User defined tasks to complete
-createHelis = 0; % boolean
-saveHelis = 0; % boolean
+createHelis = 0; % #ok<NASGU> #ok<MSNU> boolean
+saveHelis = 0; if saveHelis, createHelis = 1; end % #ok<UNRCH> boolean - savings requires creating
 rsamInterval = 10; % { 0 == do not create RSAM | n == n minute RSAM interval }
 
     % User parameters - instrument code & output directories
-tag = ChannelTag('RC.RAUN.--.EHZ');
+tag = ChannelTag('IC.MLTN.--.EHZ');
 mkdir ~/Desktop/RaungHelicorders/;
 mkdir(['~/Desktop/RaungHelicorders/' tag.string '/'])
 
@@ -82,3 +82,17 @@ while(t <= tstop)
     clear w tmp_rsam
 
 end
+
+
+
+%% NOTES TO SELF:
+
+%{
+I cleaned up some of the RSAM results by removing everything that was above
+10000 counts. Somehow, the MLTN station has values that are Ne18 for some
+reason. Those values needed to be removed, obviously.
+
+Also, be aware of nan values. By using the waveform object to store the
+data, it appears to take care of the nan values. Otherwise, dividing by nan
+when making the RSAM ratios would cause the whole vector of data to be nan.
+%}
