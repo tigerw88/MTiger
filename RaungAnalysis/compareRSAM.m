@@ -21,15 +21,20 @@ for n = 1:numel(R); ax(n) = subplot(numel(R),1,n); plot(R(n), 'xunit', 'date', '
 
 %% PLOT RSAM RATIO
 
-for n = 1:numel(R)-1
+comparissons = [1 2; 1 3; 1 4; 2 4]; % list of comparrisons to make - i.e., [1 2; 1 3; etc.] --> [compare 1 to 2; compare 1 to 3; etc.]
+noDthresh = 50; % threshold of RSAM counts under which to consider no data
+
+for n = 1:size(comparissons,1); % for the number of comparrisons specified - i.e., number of rows in comparrisons
 
     % compute ratio - store as waveform object
-    RATIO = R(n);
-    x1 = get(R(n), 'data');
-    x2 = get(R(n+1), 'data');
+    d1 = R(comparissons(n,1));
+    d2 = R(comparissons(n,2));
+    RATIO = d1;
+    x1 = get(d1, 'data');
+    x2 = get(d2, 'data');
     ratio = x1 ./ x2;
-    ratio(x1 < 1 | isnan(x1)) = 0;
-    ratio(x2 < 1 | isnan(x2)) = 0;
+    ratio(x1 < noDthresh | isnan(x1)) = 0;
+    ratio(x2 < noDthresh | isnan(x2)) = 0;
     RATIO = set(RATIO, 'data', ratio);
     RATIO = set(RATIO, 'units', 'RSAM ratio');
     RATIO = set(RATIO, 'ChannelTag', '...');
@@ -38,8 +43,8 @@ for n = 1:numel(R)-1
     % plot figure
     f = f+1; figure(f)
     ax(1) = subplot(211);
-    plot(R(n), 'xunit', 'date', 'Color', 'k'); hold on;
-    plot(R(n+1), 'xunit', 'date', 'Color', 'r');
+    plot(d1, 'xunit', 'date', 'Color', 'k'); hold on;
+    plot(d2, 'xunit', 'date', 'Color', 'r');
     zoom('xon')
     ax(2) = subplot(212);
     plot(RATIO, 'xunit', 'date', 'Color', 'k')

@@ -10,7 +10,7 @@ baseoutdirectory = '/Volumes/EFIS_seis/SEISMICDATA/Indonesia/IjenData_2011-2015/
 
 tic
 
-year = 2011:2014;
+year = 2011;
 month_mmm = {'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'Desember'}; % all
 month_mm = 1:12;
 day = 1:31;
@@ -20,7 +20,8 @@ for yyyy = year
         for dd = day
             
                 % this only works if all months are processed
-            findirectory = sprintf('/Volumes/Elements/%04d/%s/%04d%02d%02d/Set00/',yyyy, month_mmm{mmm}, yyyy, month_mm(mmm), dd);
+%             findirectory = sprintf('/Volumes/Elements/%04d/%s/%04d%02d%02d/Set00/',yyyy, month_mmm{mmm}, yyyy, month_mm(mmm), dd);
+            findirectory = sprintf('/Volumes/Elements/%04d/%s/',yyyy, month_mmm{mmm}); % format for 2011
             fnames = dir([findirectory num2str(yyyy) '*']);
             
 %             baseoutdirectory = '/Volumes/IjenSACconversions/';
