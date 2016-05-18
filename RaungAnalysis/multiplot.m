@@ -22,6 +22,6 @@ for n = 1:numel(w)
     
 end
 
-% linkaxes(ax,'x')
+linkaxes(ax,'x')
 
 end
