@@ -1,15 +1,12 @@
-function EVENT = load_RaungDataSAC(directoryformat, tags, t1, t2)
-% LOAD_RAUNGDATASAC Grabs SAC data from a consistent file structure
+function EVENT = load_RaungDataSAC(directoryformat, file_length, tags, t1, t2)
+% LOAD_RAUNGDATASAC GRABS SAC DATA FROM A CONSISTENT FILE STRUCTURE
 % Based on t1 and t2 and the file length for each SAC file, this function
-% open all necessary files from a directory, merges the waveform data, and
+% opens all necessary files from a directory, merges the waveform data, and
 % clips those data to the times t1 and t2. This operation is done for each
 % station specified by tags.
 %
-% HARD-CODED in the body of this function
-% + filename (filestructure) - Currently handles only one file structure,
-% which is hard-coded into the body of the function.
-% + file_length - minutes of seismic data per SAC file
-% + Other notes: This function only works for SAC files. The directory
+% NOTES
+% + This function only works for SAC files. The directory
 % structure must be consistent.
 %
 % INPUT
@@ -19,12 +16,10 @@ function EVENT = load_RaungDataSAC(directoryformat, tags, t1, t2)
 %       /Volumes/2014/03/17-KBUR.sac
 %   would be described by the following format:
 %       {'/Volumes/%04d/%02d/%02d-%s.sac','year','month','day','station'}
-% %s can hold the place for 'station', 'channel', 'network', or
-% 'location;
-% %d can hold the place for 'year', 'month', 'day', 'jday', 'hour',
-% 'minute', or 'second'
-% See datasource for more details
-% %+ basedir - the directory where the SAC data are stored
+% '%s' can hold the place for 'station', 'channel', 'network', or 'location;
+% '%d' can hold the place for 'year', 'month', 'day', 'jday', 'hour', 'minute', or 'second'
+%   See datasource for more details
+% + file_length - minutes of seismic data per SAC file
 % + tags - list of ChannelTag objects that you want to retrieve
 % + t1 - array of start times for data
 % + t2 - array of stop times for data
@@ -40,6 +35,9 @@ function EVENT = load_RaungDataSAC(directoryformat, tags, t1, t2)
 %       {'2014/11/11 11:05:00', '2015/05/28 13:05:00'}, {'2014/11/11 11:25:00', '2015/05/28 13:45:00'})
 %
 
+% HARD-CODED in the body of this function
+%
+
 % stub information
 % basedir = '/Volumes/RaungBackup/RaungSAC/'
 % tags = ChannelTag({'RC.KBUR.--.EHZ', 'RC.MLLR.--.EHZ'})
@@ -47,11 +45,6 @@ function EVENT = load_RaungDataSAC(directoryformat, tags, t1, t2)
 % t2 = {'2014/11/11 11:25:00', '2015/05/28 13:45:00'}
 
 %% run
-
-file_length_min = 20; % minutes of seismic data in each sac file - hard-coded
-
-
-
 
 for i = 1:numel(tags) % - executed for each ChannelTag
     
@@ -63,9 +56,9 @@ for i = 1:numel(tags) % - executed for each ChannelTag
         
             % create list of times corresponding to available and relevant sac files
         tdvec = datevec(t1(j)); % converts t1 of j event into type datevec
-        tdvec(5) = floor(tdvec(5)/20)*file_length_min; % turns datevec version of t1 into the start time for the file that corresponds to t1
+        tdvec(5) = floor(tdvec(5)/file_length)*file_length; % turns datevec version of t1 into the start time for the file that corresponds to t1
         tdvec(6) = 0; % set all seconds to zero
-        times = datenum(tdvec):file_length_min/60/24:datenum(t2(j)); % creates list of all datenum times that correspond to files that need to be opened
+        times = datenum(tdvec):file_length/60/24:datenum(t2(j)); % creates list of all datenum times that correspond to files that need to be opened
         timesdvec = datevec(times); % converts list of datenum to datevec
 
         
@@ -73,15 +66,12 @@ for i = 1:numel(tags) % - executed for each ChannelTag
             
             % - executed for each file on each ChannelTag
             
-            % parse year, month, date, hour, minute, second from datevec
+                % parse year, month, date, hour, minute, second from datevec
             yyyy = timesdvec(n, 1); mm = timesdvec(n, 2); dd = timesdvec(n, 3); HH = timesdvec(n, 4); MM = timesdvec(n, 5); SS = timesdvec(n, 6);
             
-            % create filename string based on known file structure
-            % filestructure is hard-coded
-%             filename = sprintf('%s%04d/%04d%02d/%04d%02d%02d_%02d%02d%02d_MAN/%s.%s.%s.%s', basedir, yyyy, yyyy, mm, yyyy, mm, dd, HH, MM, SS, station, channel, network, location);
-%             ds = datasource('sac',filename); % greate GISMO datasource object
-            ds = datasource('sac',directoryformat{:})
-            w(n) = waveform(ds, tags(i), t1(j), t2(j)); % create waveform from sac file
+                % create filename string based on specified directory and file structure
+            ds = datasource('sac',directoryformat{:});
+            w(n) = waveform(ds, tags(i), times(n), NaN); % create waveform from sac file; Note: the end time is completely useless
             
         end
         
