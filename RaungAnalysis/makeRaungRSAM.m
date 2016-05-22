@@ -10,12 +10,14 @@
 %% User Input
 
     % User defined tasks to complete
-createHelis = 0; % #ok<NASGU> #ok<MSNU> boolean
+createHelis = 1; % #ok<NASGU> #ok<MSNU> boolean
 saveHelis = 0; if saveHelis, createHelis = 1; end % #ok<UNRCH> boolean - savings requires creating
-rsamInterval = 10; % { 0 == do not create RSAM | n == n minute RSAM interval }
+rsamInterval = 0; % { 0 == do not create RSAM | n == n minute RSAM interval }
+mpl = 30;
+trace_color = colors.earthworm;
 
     % User parameters - instrument code & output directories
-tag = ChannelTag('IC.MLTN.--.EHZ');
+tag = ChannelTag('RC.KBUR.--.EHZ');
 mkdir ~/Desktop/RaungHelicorders/;
 mkdir(['~/Desktop/RaungHelicorders/' tag.string '/'])
 
@@ -23,8 +25,9 @@ mkdir(['~/Desktop/RaungHelicorders/' tag.string '/'])
 ds = datasource('winston','localhost',16022);
 % ds = datasource('winston','192.168.0.130',16027);
 scnl = scnlobject(tag.station,tag.channel,tag.network,tag.location);
-tstart = datenum('2014/11/01 00:00:00');
-tstop = datenum('2015/08/31 00:00:00');
+tstart = datenum('2015/01/11 00:00:00');
+tstop = datenum('2015/01/11 00:00:00');
+
 
 %% auto-preparation
 
@@ -52,10 +55,6 @@ while(t <= tstop)
             tmp_wrsam = set(tmp_wrsam, 'data', tmp_rsam.data);
 
             rsam = combine([rsam tmp_wrsam]);
-            
-            %             w_all = combine([w_all w]);
-% %             tmp_rsam = resample(abs(w), 'mean', get(w,'freq')*60*rsamInterval); % "get(w,'freq')*60*rsamInterval" grabs rsamInterval minutes worth of data
-% %             rsam = combine([rsam tmp_rsam]);
         
         end
         
@@ -63,9 +62,9 @@ while(t <= tstop)
         if createHelis
             
             heli = helicorder(w); % create the helicorder object
-            heli.mpl = 30;
-            heli.trace_color = colors.earthworm;
-            build(heli) % display the helicorder
+            heli.mpl = mpl; % minutes per line
+            heli.trace_color = trace_color; % specify color type
+            build2(heli) % display the helicorder
             
             if saveHelis
                 saveas(gcf,['~/Desktop/RaungHelicorders/' tag.string '/' datestr(t,'yyyy-mm-dd') '.jpg']) % save jpg
