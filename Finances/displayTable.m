@@ -1,3 +1,3 @@
 function displayTable(T)
 
-T(:, {'Date', 'Description', 'Amount', 'BudgetCat', 'BudgetSubCat', 'Category'})
+T(:, {'Date', 'Description', 'Amount', 'BudgetType', 'BudgetCat', 'Category'})
