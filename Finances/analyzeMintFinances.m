@@ -1,20 +1,21 @@
 %% analyzeMintFinances
 
+    % Import Data
+Tall = importTransactions('/Users/jaywellik/GoogleDrive/transactions.csv'); % import data
 
-Tall = importTransactions('/Users/jaywellik/GoogleDrive/transactions.csv');
+MintCategoryNames = unique(Tall{:,'Category'});
+MintCategoryExpInc = double(size(MintCategoryNames)); % initialize variable to store whether or not category is an expense or income
 
-B = defineBudget();
+B = defineBudget(); % create a budget
 
-% approximateTaxFromPaycheck
+% approximateTaxFromPaycheck; % find all paycheck transactions and make sure it properly reflects salary, taxes, etc.
 
-T = filterTransactions(Tall);
+T = filterTransactions(Tall); % narrow by date, remove reimbursable transactions, remove transfers, etc.
 
-T = summarizeBudgetReport(T, B);
+T = assignBudgetCat(T, B); % assign budget categories
 
 % displaySummary;
 displayTable(T)
-budgetReport
 % displayTable(T(strcmp(T.BudgetCat,'Dining'), :))
 
-% plotTransactions;
-
+budgetReport(T, B)
