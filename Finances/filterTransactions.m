@@ -25,10 +25,8 @@ idx.io = ~(strcmp(T.Category, 'Credit Card Payment') ...
 
 
     % apply the filter
-% r = (idx.date + idx.type + idx.reimbursable + idx.io) >= 4; T = T(r,:);
 r = (idx.date & idx.type & idx.reimbursable & idx.io);
 T = T(r, :);
-% T = T(r, {'Date', 'Description', 'Category', 'Amount', 'Labels'});
 
 %% Split into Budget Categories
 
