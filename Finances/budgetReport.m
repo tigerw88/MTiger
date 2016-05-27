@@ -1,24 +1,56 @@
+function budgetReport(T, B)
 
-['Expected Savings this Year: $' num2str(sum(extractfield(B, 'Amount'))*-1)]
+%% Things we want to know:
 
-for n = 1:numel(B)
+    % data
     
+days_passed = (datenum(max(T.Date)) - datenum(min(T.Date)));
+perc_time_passed = days_passed / 365;
     
-    totalspent(n) = sum(T{strcmp(T.BudgetCat, B(n).Name), 'Amount'});
-    budgetpercent = totalspent(n) / B(n).Amount;
-    percenttime = (datenum(max(T.Date)) - datenum(min(T.Date)))/365;
-    plusminuspercent = (budgetpercent / percenttime) * 100;
-    data(n) = totalspent(n) / B(n).Amount;
-    label{n} = B(n).Name;
+% total_monthly_spent;
+% total_annual_spent;
+% TOTAL_SPENT;
+
+% salary_earned;
+% other_income_earned;
+% TOTAL_EARNED;
+
+
+    % derivatives
+
+% SALARY_SAVED = salary_earned - TOTAL_SPENT;
+% TOTAL_SAVED = TOTAL_EARNED - TOTAL_SPENT;
+% 
+% EXPECTED_SAVINGS = TOTAL_SAVED / days_passed * 365;
+
+
+%%
+
+for k = 1:numel(B)
     
-    summarystr = [B(n).Name ': $' num2str(totalspent(n)) ' of $' num2str(B(n).Amount) ' ('  num2str(plusminuspercent)  '% compared to pace)'];
-    
-    display('------------------------')
-    display(summarystr)
+    switch B(k).Name
+        
+        case 'Monthly Expense'
+            
+            [monthly_exp] = compareBudget2Actual(T, B(k), perc_time_passed);
+            
+        case 'Annual Expense'
+            
+            [annual_exp] = compareBudget2Actual(T, B(k), perc_time_passed);
+            
+        case 'Annual Income'
+            
+            [income] = compareBudget2Actual(T, B(k), perc_time_passed);
+            
+        otherwise
+            
+            
+    end
     
 end
 
-%%
+
+%% Figures
 
 close all
 figure
@@ -48,3 +80,29 @@ title('Dollars Spending')
 % figure
 % x = [sum(abs(totalspent(1:end-4))) sum(abs(totalspent(end-2)))-sum(abs(totalspent(1:end-4)))]
 % pie(x)
+
+
+%% Internal Functions
+
+    function this_type = compareBudget2Actual(T, budget_type, percenttime)
+        
+        BC = budget_type.BudgetCat; % Extract Budget Categories for this type
+        
+        for n = 1:numel(BC)
+            
+            this_type.labels{n} = BC(n).Name;
+            this_type.totalspent(n) = sum(T{strcmp(T.BudgetCat, BC(n).Name), 'Amount'});
+            this_type.budgetpercent(n) = this_type.totalspent(n) / BC(n).Amount;
+            this_type.plusminuspercent(n) = (this_type.budgetpercent(n) / percenttime) * 100;
+            
+            this_type.summarystr = [BC(n).Name ': $' num2str(this_type.totalspent(n)) ' of $' num2str(BC(n).Amount) ' ('  num2str(this_type.plusminuspercent(n))  '% compared to pace)'];
+            
+            display('------------------------')
+            display(this_type.summarystr)
+            
+        end
+        
+    end
+
+%%
+end
