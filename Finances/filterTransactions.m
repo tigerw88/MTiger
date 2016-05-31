@@ -28,11 +28,4 @@ idx.io = ~(strcmp(T.Category, 'Credit Card Payment') ...
 r = (idx.date & idx.type & idx.reimbursable & idx.io);
 T = T(r, :);
 
-%% Split into Budget Categories
-
-
-
-
-
-
 end

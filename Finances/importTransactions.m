@@ -123,15 +123,13 @@ AccountName = rawCellColumns(:, 5);
 Labels = rawCellColumns(:, 6);
 Notes = rawCellColumns(:, 7);
 
-BudgetType = Category;
-BudgetCat = BudgetType;
+Group = Category;
 
 % For code requiring serial dates (datenum) instead of datetime, uncomment
 % the following line(s) below to return the imported dates as datenum(s).
 
 % Date=datenum(Date);
 
-T = table(Date, Description, OriginalDescription, Amount, TransactionType, Category, AccountName, Labels, Notes, BudgetType, BudgetCat);
-T{:, 'BudgetType'} = {''};
-T{:, 'BudgetCat'} = {''};
+T = table(Date, Description, OriginalDescription, Amount, TransactionType, Category, AccountName, Labels, Notes, Group);
+T{:, 'Group'} = {'Ungrouped'};
 
