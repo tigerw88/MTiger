@@ -1,3 +1,5 @@
+clear all, close all
+
 %% analyzeMintFinances
 
     % Import Data
@@ -16,4 +18,4 @@ T = assignBudgetGroup(T, B); % assign budget categories
 
 displayTable(T)
 
-% budgetReport(T, B)
+generateReport(T, B);
