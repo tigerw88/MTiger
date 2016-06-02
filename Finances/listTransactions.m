@@ -1,4 +1,4 @@
 function listTransactions(T)
 
-T(:, {'Date', 'Description', 'Amount', 'Group', 'Category'});
-sortrows(T, 'Date', 'descend')
+T = sortrows(T, 'Date', 'descend');
+T(:, {'Date', 'Description', 'Amount', 'Group', 'Category'})
