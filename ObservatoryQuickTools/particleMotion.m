@@ -20,7 +20,9 @@ SEP 22 2015: Include sample rate to get indices of seismic data associated with 
 
 % WISH LIST
 Work with heliPanel and clipboard
-Work with waveform object 
+Work with waveform object <-- working on this nows
+Be able to switch to spectogram (similar to working with heliPanel and
+clipboard
 If only a Z channel is provided, search for the existence of N and E channels.
 
 %}
