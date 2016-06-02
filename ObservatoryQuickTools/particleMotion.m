@@ -13,14 +13,15 @@ The y1, y2, y3 may not actually match up properly. This is just to see if
 I could get everything responding the way it is supposed to.
 
 
-%UPDATES
+% UPDATES
 SEP 22 2015: Add plot labels
 SEP 22 2015: Accept actual seismic data (stub)
 SEP 22 2015: Include sample rate to get indices of seismic data associated with zoom limits
 
-% Wish list
-% Work with heliPanel and clipboard
-% If only a Z channel is provided, search for the existence of N and E channels.
+% WISH LIST
+Work with heliPanel and clipboard
+Work with waveform object 
+If only a Z channel is provided, search for the existence of N and E channels.
 
 %}
 
@@ -57,12 +58,13 @@ f = figure;
 %% Plot data
 
     % Define space for waveforms & plot
-sp(1) = subplot(2,3,[1:3]);
+sp(1) = subplot(2,3, 1:3);
 sp(1).Tag = 'waveform';
-plot(t,e); hold on; plot(t,n,'r'); plot(t,z,'k', 'LineWidth', 2);
+eplot = plot(t,e); hold on; nplot = plot(t,n,'r'); zplot = plot(t,z,'k', 'LineWidth', 2);
 sp(1).XLabel.String = 'Time';
 % sp(1).XTickLabel = {sp(1).XTick/get(w_zne(1), 'freq')};
 % datetick('x','HH:MM:SS');
+% legend([zplot, nplot, eplot], 'Vertical', 'North', 'East');
 
     % Define zoom axes and callbacks
 wp_xlim = 1:length(z);
@@ -80,20 +82,35 @@ ph.Enable = 'on';
     % Define space for E/N particle motion & plot
 sp(2) = subplot(2,3,4); plot(e(wp_xlim), n(wp_xlim), 'k');
 sp(2).Tag = 'NE';
+sp(2).Title.String = 'Horizontal';
 xlabel('East'); ylabel('North');
 axis square
 
     % Define space for E/Z particle motion & plot
 sp(3) = subplot(2,3,5); plot(e(wp_xlim), z(wp_xlim), 'k');
 sp(3).Tag = 'ZE';
+sp(3).Title.String = 'Vertical';
 xlabel('East'); ylabel('Vertical');
 axis square
 
     % Define space for N/Z particle motion & plot
 sp(4) = subplot(2,3,6); plot(n(wp_xlim), z(wp_xlim), 'k');
 sp(4).Tag = 'ZN';
+sp(4).Title.String = 'Vertical';
 xlabel('North'); ylabel('Vertical');
 axis square
+
+    % Determine max and min values for consistent axes across all three
+    % particle motion plots
+pm_max = max(abs([sp(2:4).XLim sp(2:4).YLim])); % finds abs() of max particle motion from default plot
+
+    % Make all particle motion axes the same
+for n = 2:4
+    sp(n).XLim(1) = -pm_max;
+    sp(n).XLim(2) = pm_max;
+    sp(n).YLim(1) = -pm_max;
+    sp(n).YLim(2) = pm_max;
+end
 
 %% Callback Functions
 
@@ -115,7 +132,7 @@ axis square
         ndatapts = numel(obj.Children(4).Children(1).XData);
                 
             % start of new time series window to end of new time series
-            % window - expressed as t1:t2
+            % window - expressed as t1:t2 (???)
         data_range = floor(eventdata.Axes.XLim(1)):ceil(eventdata.Axes.XLim(2));
         
             % make sure datarange does not exceed data indices
@@ -147,8 +164,7 @@ axis square
         
             % obj.Children(3) represents V/N plot
         obj.Children(1).Children.XData = new_n;
-        obj.Children(1).Children.YData = new_z; 
-        
+        obj.Children(1).Children.YData = new_z;
         
     end
 

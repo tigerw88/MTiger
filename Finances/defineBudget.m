@@ -95,7 +95,7 @@ GroupExpInc(n) = -1;
 n = n+1;
 Group{n} = 'Taxes';
 BudgetAmount(n) = -60000*0.2;
-GroupCategories{n} = {'State Tax', 'Federal Tax', 'Gov Fine'};
+GroupCategories{n} = {'State Tax', 'Federal Tax', 'Gov Fine', 'Tax'};
 GroupExpInc(n) = -1;
 
 
@@ -106,7 +106,7 @@ GroupExpInc(n) = -1;
 n = n+1;
 Group{n} = 'Salary';
 BudgetAmount(n) = 60000;
-GroupCategories{n} = {'Paycheck'};
+GroupCategories{n} = {'Paycheck', 'Salary'};
 GroupExpInc(n) = 1;
 
     %

@@ -11,11 +11,13 @@ M.MintCategoryExpInc = double(size(M.MintCategoryNames)); % initialize variable 
 B = defineBudget(); % create a budget
 % M.MintCategoryBudget = category2budgetCategoryMap(MintCategoryNames, B);
 
-% approximateTaxFromPaycheck; % find all paycheck transactions and make sure it properly reflects salary, taxes, etc.
-
 T = filterTransactions(Tall); % narrow by date, remove reimbursable transactions, remove transfers, etc.
+% T = approximateTaxFromPaycheck(T); % find all paycheck transactions and make sure it properly reflects salary, taxes, etc.
+% T = splitTransaction(T(strcmp(T.Category, 'Paycheck'), :), {'Salary', 'State Tax', 'Federal Tax'}, [1.5 0.75 0.75], 'amounts');
+% T = splitTransaction(T(strcmp(T.Category, 'Paycheck'), :), {'Salary', 'State Tax', 'Federal Tax'}, [2000 500 500], 'dollars');
 T = assignBudgetGroup(T, B); % assign budget categories
 
-displayTable(T)
+
+listTransactions(T)
 
 generateReport(T, B);

@@ -1,4 +1,5 @@
 function [dnum, dstr, TJ, TL, VA, VB] = parseEndiAwuFBpost(input_str)
+%% PARSEENDIAWUFBPOST Parses Facebook posts from Endi Awu for earthquake rate information
 
     % stub string
 % str = 'Waspada Awu, 30 April 2016 ! Visual : Cuaca terang, angin tenang ! Hujan 29 April 2016 H. Nihil ! G. Awu tampak jelas, asap kawah tidak teramati ( Nihil ) ! Smk. 29 April 2016, 26 x TJ, 2 x TL, 2 x VA dan 10 x VB ! Simpulan : Kegiatan G. Awu masih status Waspada ( Level II ) ! Rekomendasi : Radius 3 Km dari Puncak Awu agar tidak ada Aktifitas/Pengunjung ..... ! Gbr. Visual G. Awu pagi ini, Rekaman Analog dan Digital Gempa Awu 12 Jam terakhir ... !';

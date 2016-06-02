@@ -1,3 +1,4 @@
-function displayTable(T)
+function listTransactions(T)
 
-T(:, {'Date', 'Description', 'Amount', 'Group', 'Category'})
+T(:, {'Date', 'Description', 'Amount', 'Group', 'Category'});
+sortrows(T, 'Date')

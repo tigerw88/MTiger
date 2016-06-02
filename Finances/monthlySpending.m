@@ -1,4 +1,4 @@
-function [ monthly_category_amounts, budget_category_amounts ] = monthlySpending( trans, budget, map )
+function [ monthly_category_amounts, budget_category_amounts ] = monthlySpending( trans, budget )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
