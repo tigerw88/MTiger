@@ -1,10 +1,10 @@
-function B = splitTransaction( T, categories, amounts, type )
+function [T2, B] = splitTransaction( A, old_category, categories, amounts, type )
 % SPLITTRANSACTION Splits a transaction into multiple categories
 % This function could also be used to change a category name
 %
 % INPUT
-% + T - table that holds the transactions
-% + trans - 
+% + A - table that holds the transactions
+% + old_category - the category that you want to split
 % + categories - {n-by-1} list of desired categories (must include original
 % category if you want it to still be included)
 % + amounts - [n-by-1] list of amounts corresponding to each category
@@ -12,7 +12,9 @@ function B = splitTransaction( T, categories, amounts, type )
 % amount or percentage of existing dollar amount
 %
 % OUTPUT
-% + T2 - modified table with split transactions
+% + B - table of only newly created transactions
+% + T2 - table with all transactions (i.e., all transactions that were not
+% involved in the split and B)
 %
 % HARD-CODED
 %
@@ -23,7 +25,7 @@ function B = splitTransaction( T, categories, amounts, type )
 
     % check to make sure categories and amounts are equal in length
 if ~(size(categories)==size(amounts)), error('Number of categories does not match number of amounts.'); end
-if numel(unique(findgroups(T.Category))) > 1, error('Not all categories are the same'); end;
+% if numel(unique(findgroups(T.Category))) > 1, error('Not all categories are the same'); end;
 
 switch type
     
@@ -34,8 +36,8 @@ switch type
         
     case 'percent'
         
-        percdiff = amounts-1;
-        if ~(sum(percdiff)==0), error('Split amounts do not equal 100%.'); end
+%         percdiff = amounts-1;
+%         if ~(sum(percdiff)==0), error('Split amounts do not equal 100%.'); end
         
     otherwise
         
@@ -46,8 +48,10 @@ end
 
 %%
 
-original_category = T.Category(1);
-T{:, 'Category'} = strrep(T{:, 'Category'}, original_category, 'original_category');
+R = A; % intialize table of 'R'emaining transcations - i.e., a table that does not contain the transactions that will be split
+R(strcmp(R.Category, old_category), :) = []; % remove transactions that will be split from the 'Remaining' table
+T = A(strcmp(A.Category, old_category), :); % extract all transactions that are to be split
+T{:, 'Category'} = strrep(T{:, 'Category'}, old_category, 'original_category');
 
 B = T;
 startidx = 1:size(T,1):size(T,1)*numel(categories);
@@ -77,51 +81,9 @@ for n=1:numel(categories)
     
 end;
 B(stopidx(end)+1:end, :) = [];
+T2 = [R; B];
+T2 = sortrows(T2, 'Date', 'descend');
 
 
-%%
-% 
-% original_category = T.Category(1);
-% 
-% 
-% 
-% T2 = T;
-% T2{:, 'Category'} = strrep(T2{:, 'Category'}, original_category, 'original_category');
-% 
-% 
-% for n = 1:numel(categories)
-%     
-%     T2 = [T2; T];
-%     T2{:, 'Category'} = strrep(T2{:, 'Category'}, 'original_category', categories(n));
-%     
-%     switch type
-%         
-%         case 'dollars'
-%             
-%             T2{:, 'Amount'} = amounts(n);
-%                  
-%         case 'percent'
-%             
-%             T2{:, 'Amount'} = T2{:, 'Amount'}*amounts(n);
-%                  
-%     end
-%     
-% 
-%     
-% end
-% 
-%     % remove all of the original transactions
-% T2(strcmp(T2.Category, 'original_category'), :) = [];
-
-%%
-
-% Tnet = T(strcmp(T.Category, 'Paycheck'), :);
-% Tsalary = T(strcmp(T.Category, 'Paycheck'), :);
-% Tsalary{:, 'Category'} = strrep(Tsalary{:, 'Category'}, 'Paycheck', 'Salary');
-% Ttax = T(strcmp(T.Category, 'Paycheck'), :);
-% Ttax{:, 'Category'} = strrep(Ttax{:, 'Category'}, 'Paycheck', 'Tax');
-% Ttax{:, 'Group'} = strrep(Ttax{:, 'Group'}, 'Salary', 'Tax');
-% Tsalary{:, 'Amount'} = Tsalary{:, 'Amount'}*(1/(1-tax_rate))
-% Ttax{:, 'Amount'} = Tsalary{:, 'Amount'}-Ttax{:, 'Amount'}
 
 end
