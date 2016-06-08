@@ -66,8 +66,8 @@ end
 %% Look at events and particle motion
 
 
-eoi = 7; % event of interest
-z_stations = [1:3:numel(tag)];
+eoi = 2; % event of interest
+z_stations = 1:3:numel(tag);
 ehz_stations = 10:12;
 
 

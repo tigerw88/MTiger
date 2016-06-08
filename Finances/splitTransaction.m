@@ -48,7 +48,16 @@ end
 
 %%
 
-R = A; % intialize table of 'R'emaining transcations - i.e., a table that does not contain the transactions that will be split
+    % Table Definitions:
+% A - all original transactions 
+% R - remaining transactions not involved in the split
+% T - all transactions that will be split
+% B - table of splits
+% T2 - modified table with splits and previous transactions - i.e., [R; B]
+
+%%
+
+R = A; % intialize table of remaining transcations
 R(strcmp(R.Category, old_category), :) = []; % remove transactions that will be split from the 'Remaining' table
 T = A(strcmp(A.Category, old_category), :); % extract all transactions that are to be split
 T{:, 'Category'} = strrep(T{:, 'Category'}, old_category, 'original_category');

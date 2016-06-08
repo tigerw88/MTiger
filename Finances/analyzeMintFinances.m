@@ -13,8 +13,7 @@ B = defineBudget(); % create a budget
 
 T = filterTransactions(Tall); % narrow by date, remove reimbursable transactions, remove transfers, etc.
 % T = approximateTaxFromPaycheck(T); % find all paycheck transactions and make sure it properly reflects salary, taxes, etc.
-% T = splitTransaction(T(strcmp(T.Category, 'Paycheck'), :), {'Salary', 'State Tax', 'Federal Tax'}, [1.5 0.75 0.75], 'amounts');
-% T = splitTransaction(T(strcmp(T.Category, 'Paycheck'), :), {'Salary', 'State Tax', 'Federal Tax'}, [2000 500 500], 'dollars');
+[T, ~] = splitTransaction(T, 'Paycheck', {'Salary', 'State Tax', 'Federal Tax', 'Misc. Deduction', 'TPS'}, [1.6136 0.0980 0.1966 0.2472 0.05], 'percent');
 T = assignBudgetGroup(T, B); % assign budget categories
 
 

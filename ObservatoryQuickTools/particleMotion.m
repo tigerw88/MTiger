@@ -24,6 +24,7 @@ Work with heliPanel and clipboard
 Be able to switch to spectogram (similar to working with heliPanel and
 clipboard
 If only a Z channel is provided, search for the existence of N and E channels.
+Be able to pan
 
 %}
 
@@ -41,6 +42,8 @@ If only a Z channel is provided, search for the existence of N and E channels.
 % sample_rate = 100;
 
 %% Parse input data
+
+if numel(w_zne)~=3, error('Input waveform object must have three components.'); end
 
     % channel order
 w = w_zne;
@@ -196,7 +199,7 @@ end
 
 
     function waveformPan(obj, eventdata)
-        
+
         
     end
 

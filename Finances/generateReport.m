@@ -87,7 +87,8 @@ labels = {'Savings', 'Expenses'};
 budgeted_income = B.BudgetAmount(11); % this is the one that pertains to Salary
 budgeted_expenses = sum(abs(B.BudgetAmount(idx.exp,:)'));
 budgeted_savings = budgeted_income - budgeted_expenses;
-pie([budgeted_savings budgeted_expenses]);
+phB = pie([budgeted_savings budgeted_expenses]);
+colormap([0 1 0; 1 0 0])
 legend(labels,'Location','southoutside','Orientation','horizontal');
 title({'Budgeted Savings as a % of Income';['Total Income: $' num2str(budgeted_income)]});
 
@@ -97,7 +98,8 @@ labels = {'Savings', 'Expenses'};
 total_income = sum(sum(GroupAmount(idx.inc,:)'));
 total_expenses = sum(sum(GroupAmount(idx.exp,:)'));
 total_savings = total_income - total_expenses;
-pie([total_savings total_expenses]);
+phA = pie([total_savings total_expenses]);
+colormap([0 1 0; 1 0 0])
 legend(labels,'Location','southoutside','Orientation','horizontal');
 title({'Actual Savings as a % of Income';['Total Income: $' num2str(total_income)]});
 

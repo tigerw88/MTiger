@@ -41,7 +41,7 @@ GroupExpInc(n) = -1;
     %
 n = n+1;
 Group{n} = 'Pers. Discretionary';
-BudgetAmount(n) = -250*12;
+BudgetAmount(n) = -1500;
 GroupCategories{n} = {...
     'Movies & DVDs', 'Books', 'Music', 'Arts', 'Electronics & Software', ...
     'Amusement', 'Park Fees & Camping', 'Sporting Events', ...
@@ -73,8 +73,8 @@ GroupExpInc(n) = -1;
     %
 n = n+1;
 Group{n} = 'Shopping';
-BudgetAmount(n) = -3000;
-GroupCategories{n} = {'Shopping', 'Sporting Goods', 'Clothing', 'Bike Service &amp; Parts', 'Home', 'Furnishings'};
+BudgetAmount(n) = -4000;
+GroupCategories{n} = {'Shopping', 'Sporting Goods', 'Clothing', 'Bike Service Parts', 'Home', 'Furnishings'};
 GroupExpInc(n) = -1;
 
     %
@@ -94,8 +94,8 @@ GroupExpInc(n) = -1;
     %
 n = n+1;
 Group{n} = 'Taxes';
-BudgetAmount(n) = -60000*0.2;
-GroupCategories{n} = {'State Tax', 'Federal Tax', 'Gov Fine', 'Tax'};
+BudgetAmount(n) = -60000*0.33;
+GroupCategories{n} = {'State Tax', 'Federal Tax', 'Gov Fine', 'Misc. Deduction'};
 GroupExpInc(n) = -1;
 
 
@@ -123,6 +123,13 @@ BudgetAmount(n) = 60000;
 GroupCategories{n} = {'Per Diem'};
 GroupExpInc(n) = 1;
 
+    % Savings
+n = n+1;
+Group{n} = 'Savings';
+BudgetAmount(n) = 60000*0.05;
+GroupCategories{n} = {'TPS'};
+GroupExpInc(n) = 1;
+        
 %% Transpose
 
 % make sure everything is sized n-by-1
