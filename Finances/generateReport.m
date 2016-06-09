@@ -95,7 +95,8 @@ title({'Budgeted Savings as a % of Income';['Total Income: $' num2str(budgeted_i
     % Actual
 pieax(2) = subplot(2,1,2);
 labels = {'Savings', 'Expenses'};
-total_income = sum(sum(GroupAmount(idx.inc,:)'));
+% total_income = sum(sum(GroupAmount(idx.inc,:)'));
+total_income = sum(sum(GroupAmount(11,:)'));
 total_expenses = sum(sum(GroupAmount(idx.exp,:)'));
 total_savings = total_income - total_expenses;
 phA = pie([total_savings total_expenses]);

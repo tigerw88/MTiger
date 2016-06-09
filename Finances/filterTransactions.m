@@ -1,4 +1,5 @@
 function T = filterTransactions(T)
+% FILTERTRANSACTIONS Designed specifically for my desired implementation
 
 
 %% Filter Down to Desired Transaction
