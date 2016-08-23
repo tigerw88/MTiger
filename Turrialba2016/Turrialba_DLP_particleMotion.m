@@ -7,6 +7,8 @@ clear all, close all, clc
 
 %% Set up
 
+ds = datasource('irisdmcws');
+
 start = [datenum('2016/04/11 17:40:00'), ... % just noise
     datenum('2016/04/11 20:00:17'), ... % first candidate event (*JP fav)
     datenum('2016/04/14 20:28:25'), ...
@@ -40,8 +42,8 @@ tag = ChannelTag({'OV.VIMO.--.HHZ', ... %1
                   'OV.JACO.--.HHN', ...
                   'OV.JACO.--.HHE', ...
                   });
+
 fo = filterobject('H', 0.7, 4);              
-              
 
 %% Load and Save data
 
@@ -49,7 +51,8 @@ for t = 1:numel(start)
     
     for i = 1:numel(tag)
                     
-        raw(i) = irisFetch2wo('waveform', tag(i), start(t), start(t)+60/86400); % (86400 sec/day)
+%         raw(i) = irisFetch2wo('waveform', tag(i), start(t), start(t)+60/86400); % (86400 sec/day)
+        raw(i) = waveform(ds, tag(i), start(t), start(t)+60/86400);
         w(i) = demean(raw(i));
         w(i) = fillgaps(w(i), 0, nan);
         if ~isempty(w(i)), w(i) = filtfilt(fo, w(i)); end

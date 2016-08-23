@@ -5,7 +5,7 @@ function T = filterTransactions(T)
 %% Filter Down to Desired Transaction
 
     % filter by date
-idx.date = T.Date > '09/01/2015' & T.Date <= '05/31/2016';
+idx.date = T.Date > '09/01/2015' & T.Date <= '08/30/2016';
 
     % filter by TransactionType
 idx.type = strcmp(T.TransactionType,'debit') ...

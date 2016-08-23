@@ -8,7 +8,7 @@ Tall = importTransactions('/Users/jaywellik/GoogleDrive/transactions.csv'); % im
 M.MintCategoryNames = unique(Tall{:,'Category'});
 M.MintCategoryExpInc = double(size(M.MintCategoryNames)); % initialize variable to store whether or not category is an expense or income
 
-B = defineBudget(); % create a budget
+B = defineBudget2(); % create a budget
 % M.MintCategoryBudget = category2budgetCategoryMap(MintCategoryNames, B);
 
 T = filterTransactions(Tall); % narrow by date, remove reimbursable transactions, remove transfers, etc.
@@ -19,4 +19,13 @@ T = assignBudgetGroup(T, B); % assign budget categories
 
 listTransactions(T)
 
-generateReport(T, B);
+A = generateReport(T, B);
+
+
+%% Examples of how to do some quick report plotting
+
+
+% plotMonthlySpending(T, B, {'Groceries'; 'Restaurants'; 'Coffee Shops'})
+% T(strcmp(T.Category,'Groceries') & T.Date > '05/01/2016' & T.Date <= '05/31/2016', :)
+% listTransactions(T(strcmp(T.Category,'Groceries') & T.Date > '05/01/2016' & T.Date <= '05/31/2016', :))
+% sum(T{strcmp(T.Category,'Groceries') & T.Date > '05/01/2016' & T.Date <= '05/31/2016', 'Amount'})

@@ -2,6 +2,13 @@ function [T2, B] = splitTransaction( A, old_category, categories, amounts, type 
 % SPLITTRANSACTION Splits a transaction into multiple categories
 % This function could also be used to change a category name
 %
+% This is not a split function in the way that Mint's split feature works.
+% This function is meant to take one classification of transactions and
+% split all occurrences of them into other categories. For example, if your
+% Mint register has monthly charges for rent, and you want to split each
+% one of those into rent, utilities, and internet, you would use this
+% function.
+%
 % INPUT
 % + A - table that holds the transactions
 % + old_category - the category that you want to split

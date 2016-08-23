@@ -43,7 +43,7 @@ n = n+1;
 Group{n} = 'Pers. Discretionary';
 BudgetAmount(n) = -1500;
 GroupCategories{n} = {...
-    'Movies & DVDs', 'Books', 'Music', 'Arts', 'Electronics & Software', ...
+    'Movies & DVDs', 'Books', 'Music', 'Arts', 'Electronics & Software', 'Mobile Phone', ...
     'Amusement', 'Park Fees & Camping', 'Sporting Events', ...
     'Education', 'Charity', 'Shipping', 'Misc Items', 'Gift', 'Sports', 'Vacation'};
 % What to do about 'Vacation'?
@@ -81,7 +81,7 @@ GroupExpInc(n) = -1;
 n = n+1;
 Group{n} = 'Auto';
 BudgetAmount(n) = -1500;
-GroupCategories{n} = {'Auto Insurance', 'Service & Parts'};
+GroupCategories{n} = {'Auto Insurance', 'Service & Parts', 'Car Fees'};
 GroupExpInc(n) = -1;
 
     %
@@ -95,7 +95,7 @@ GroupExpInc(n) = -1;
 n = n+1;
 Group{n} = 'Taxes';
 BudgetAmount(n) = -60000*0.33;
-GroupCategories{n} = {'State Tax', 'Federal Tax', 'Gov Fine', 'Misc. Deduction'};
+GroupCategories{n} = {'State Tax', 'Federal Tax', 'Gov Fine', 'Misc. Deduction', 'State Tax Refund', 'Federal Tax Refund'};
 GroupExpInc(n) = -1;
 
 
@@ -112,14 +112,14 @@ GroupExpInc(n) = 1;
     %
 n = n+1;
 Group{n} = 'Other Income';
-BudgetAmount(n) = 60000;
+BudgetAmount(n) = 1;
 GroupCategories{n} = {'Income', 'Interest Income', 'Gift Received'};
 GroupExpInc(n) = 1;
 
     %
 n = n+1;
 Group{n} = 'Per Diem';
-BudgetAmount(n) = 60000;
+BudgetAmount(n) = 1;
 GroupCategories{n} = {'Per Diem'};
 GroupExpInc(n) = 1;
 

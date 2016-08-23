@@ -1,4 +1,4 @@
-function plotMonthlySpending( trans, budget, type, group_cat )
+function spending = plotMonthlySpending( trans, budget, group_cat, varargin )
 %PLOTMONTHLYSPENDING Make a time serie plot of monthly spending for a list
 %of transactions given a budget
 %   Detailed explanation goes here
@@ -12,35 +12,54 @@ function plotMonthlySpending( trans, budget, type, group_cat )
 
 %% get spending amounts
 
-switch type
+subcategorynames = '';
+
+title_str = sprintf('Monthly Spending/Income for: %s', strjoin(group_cat, ', '));
+
+
+for n = 1:numel(group_cat)
     
-    case 'group'
+    % if the string exists as a category name
+    if sum(strncmp(group_cat{n}, trans.Category, 1))
         
-        spending = monthlySpending( trans(strcmp(trans.Group, group_cat), :), budget);
+        type = 'Category';
+        spending(:, n) = monthlySpending( trans(strcmp(trans.Category, group_cat{n}), :), budget)';
         
+        % elseif the string exists as a group name
+    elseif sum(strncmp(group_cat, trans.Group, 1))
         
-    case 'category'
+        type = 'Group';
+        spending(:, n) = monthlySpending( trans(strcmp(trans.Group, group_cat{n}), :), budget);
+        spending(:, n) = sum(spending(:, n)); % for n categories, the initial result of spending is n-by-12; sum(spending) makes this a 1-by-12 vector
+        %     subcategorynames = budget.GroupCategories{strncmp(budget.Group,'Living',1)};
         
-        spending = monthlySpending( trans(strcmp(trans.Category, group_cat), :), budget);
+    else
         
-    otherwise
+        error(['The string ''' group_cat ''' is neither a category nor a group in your transaction list.'])
         
+    end
+    
+    %% plot
+    
+
+    
 end
 
-%% plot
-
-bar(datenum(budget.BudgetDates), spending, 'k');
+bar(datenum(budget.BudgetDates), abs(spending), varargin{:});
 datetick('x'); % has no affect if datetime axis is replaced below
 
-    % use datetime features for x axis
+% use datetime features for x axis
 % ax = gca;
 % hold on
 % plot(ax, budget.BudgetDates, nan(size(budget.BudgetDates)));
 
-    % set plot labels
+% set plot labels
 xlabel('Month')
 ylabel('Dollars ($)')
-title(sprintf('Monthly Spending/Income: %s', category))
+title(title_str)
+legend(group_cat)
+
+
 
 end
 

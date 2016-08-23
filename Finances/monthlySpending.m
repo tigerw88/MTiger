@@ -18,7 +18,7 @@ for c = 1:numel(all_category_names)
     
         this_month = budget.BudgetDates(m); %
         this_cat = all_category_names{c}; % 'str' name of category for this iteration
-        T = trans( (trans.Date > this_month & trans.Date < this_month + calmonths(1)) & ...
+        T = trans( (trans.Date >= this_month & trans.Date < this_month + calmonths(1)) & ...
             strcmp(trans.Category, this_cat), ...
             :);
         monthly_category_amounts(c, m) = sum(T{:,'Amount'});
@@ -36,7 +36,7 @@ for c = 1:numel(all_group_names)
     
         this_month = budget.BudgetDates(m); %
         this_group = all_category_names{c}; % 'str' name of category for this iteration
-        T = trans( (trans.Date > this_month & trans.Date < this_month + calmonths(1)) & ...
+        T = trans( (trans.Date >= this_month & trans.Date < this_month + calmonths(1)) & ...
             strcmp(trans.Group, this_group), ...
             :);
         monthly_group_amounts(c, m) = sum(T{:,'Amount'});
@@ -44,11 +44,6 @@ for c = 1:numel(all_group_names)
     end
     
 end
-
-
-
-
-
 
 end
 

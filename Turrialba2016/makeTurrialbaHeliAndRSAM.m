@@ -20,9 +20,9 @@
 
     % User defined tasks to complete
 createHelis = 0; % #ok<NASGU> #ok<MSNU> boolean create Helicorder
-saveHelis = 1; % save helicorder (note, if saveHelis is '1', createHelis will automatically become '1')
+saveHelis = 0; % save helicorder (note, if saveHelis is '1', createHelis will automatically become '1')
 mpl = 30; % minutes per line on helicorder
-rsamInterval = 10; % { 0 == do not create RSAM | n == n minute RSAM interval }
+rsamInterval = 0; % { 0 == do not create RSAM | n == n minute RSAM interval }
 % trace_color = colors.earthworm;
 filterobj = filterobject('B', [0.5 40], 4);
 
