@@ -24,11 +24,11 @@ while(t <= tstop)
     heli.mpl = 30; 
     heli.trace_color = colors.earthworm;
     build(heli) % display the helicorder
-    saveas(gcf,['~/Desktop/RaungHelicorders/' nslc '/' datestr(t,'yyyy-mm-dd') '.jpg']) % save jpg
-    savefig(gcf,['~/Desktop/RaungHelicorders/' nslc '/' datestr(t,'yyyy-mm-dd') '.fig']) % save Matlab figure
+%     saveas(gcf,['~/Desktop/RaungHelicorders/' nslc '/' datestr(t,'yyyy-mm-dd') '.jpg']) % save jpg
+%     savefig(gcf,['~/Desktop/RaungHelicorders/' nslc '/' datestr(t,'yyyy-mm-dd') '.fig']) % save Matlab figure
     
     t = t+1;
-    close all
+%     close all
 
 end
 

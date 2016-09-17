@@ -1,103 +1,121 @@
-function [T2, B] = modifySalaryLineItems2( A, old_category, categories, amounts, type )
-% SPLITTRANSACTION Splits a transaction into multiple categories
-% This function could also be used to change a category name
-%
-% This is not a split function in the way that Mint's split feature works.
-% This function is meant to take one classification of transactions and
-% split all occurrences of them into other categories. For example, if your
-% Mint register has monthly charges for rent, and you want to split each
-% one of those into rent, utilities, and internet, you would use this
-% function.
-%
-% INPUT
-% + A - table that holds the transactions
-% + old_category - the category that you want to split
-% + categories - {n-by-1} list of desired categories (must include original
-% category if you want it to still be included)
-% + amounts - [n-by-1] list of amounts corresponding to each category
-% + type - 'dollars' | 'percent' - replaces original amount as new dollar
-% amount or percentage of existing dollar amount
-%
-% OUTPUT
-% + B - table of only newly created transactions
-% + T2 - table with all transactions (i.e., all transactions that were not
-% involved in the split and B)
-%
-% HARD-CODED
+function [T] = modifySalaryLineItems2( T )
+% MODIFYSALARYLINEITEMS2
 %
 %
 %
 
-%% parse input
+%{
 
-    % check to make sure categories and amounts are equal in length
-if ~(size(categories)==size(amounts)), error('Number of categories does not match number of amounts.'); end
-% if numel(unique(findgroups(T.Category))) > 1, error('Not all categories are the same'); end;
+GROSS PAY
+Salary
 
-switch type
-    
-    case 'dollars'
-        
-%         original_amount = 
-%         if ~(original_amount==sum(amounts)), warning('Split amounts do not equal original amounts.'); end
-        
-    case 'percent'
-        
-%         percdiff = amounts-1;
-%         if ~(sum(percdiff)==0), error('Split amounts do not equal 100%.'); end
-        
-    otherwise
-        
-        error('Type of split not understood. Use ''dollars'' or ''percent''.')
-    
-    
-end
+DEDUCTIONS
+Fed Tax : {Tax}
+Health Benefits : {?}
+Retirement - FERS/FRAE : {Savings}
+Medicare : {?}
+State Tax : {Tax}
+TSP Savings : {Savings}
+OASDI Tax : {Tax}
+FEGLI - Regular : {?}
+
+BENEFITS (paid by Government)
+FEGLI : {?}
+Medicare : {?}
+TSP Basic : {Benefits} >> Transfer to Savings
+FERS/FRAE : {Benefits} >> Transfer to Savings
+FEHB : {?}
+OASDI : {?}
+TSP Matching : {Benefits} >> Transfer to Savings
+
+%}
 
 %%
 
-    % Table Definitions:
-% A - all original transactions 
-% R - remaining transactions not involved in the split
-% T - all transactions that will be split
-% B - table of splits
-% T2 - modified table with splits and previous transactions - i.e., [R; B]
+% 
+A = T(strcmp(T.Category,'Paycheck'), :); % Transactions that are labelled Paycheck
 
-%%
+nc = 16; % # of new categories
 
-R = A; % intialize table of remaining transcations
-R(strcmp(R.Category, old_category), :) = []; % remove transactions that will be split from the 'Remaining' table
-T = A(strcmp(A.Category, old_category), :); % extract all transactions that are to be split
-T{:, 'Category'} = strrep(T{:, 'Category'}, old_category, 'original_category');
-
-B = T;
-startidx = 1:size(T,1):size(T,1)*numel(categories);
-stopidx = size(T,1):size(T,1):size(T,1)*numel(categories);
-
-for n=1:numel(categories)
+for n = 1:numel(A.Date) % for each transaction
     
-    B = [B; T];
-    B{startidx(n):stopidx(n), 'Category'} = ...
-        strrep(B{startidx(n):stopidx(n), 'Category'}, 'original_category', categories(n));
-    
-    switch type
+        for j=1:nc
+            B(j, :) = A(n, :);
+        end
         
-        case 'percent'
-            
-            B{startidx(n):stopidx(n), 'Amount'} = B{startidx(n):stopidx(n), 'Amount'}*amounts(n);
-            
-        case 'dollars'
-            
-            B{startidx(n):stopidx(n), 'Amount'} = amounts(n);
+        B.Category(1) = {'Salary'};
 
-            
+        % Deductions
+        B.Category(2) = {'Federal Tax'};
+        B.Category(3) = {'Health Benefits'};
+        B.Category(4) = {'Retirement - FERS/FRAE'};
+        B.Category(5) = {'Medicare'};
+        B.Category(6) = {'State Tax'};
+        B.Category(7) = {'TSP Savings'};
+        B.Category(8) = {'OASDI Tax'};
+        B.Category(9) = {'FEGLI - Regular'};
+        
+        % Benefits
+        B.Category(10) = {'FEGLI'};
+        B.Category(11) = {'Medicare'};
+        B.Category(12) = {'TSP Basic'};
+        B.Category(13) = {'FERS/FRAE'};
+        B.Category(14) = {'FEHB'};
+        B.Category(15) = {'OASDI'};
+        B.Category(16) = {'TSP Matching'};
+    
+    % Sep 15, 2015 - Sep 29, 2015
+    if floor(A.Amount(n)) == floor(1687.6)
+        
+        B.Amount = [2366.40 313.04 0 104.12 34.31 0 70.99 146.71 9.60 ...
+            4.80 34.31 23.66 262.67 0 146.71 70.99]';
+        
+    % Oct 13, 2015
+    elseif A.Amount(n) == 1534.75
+        
+        B.Amount = [2366.40 313.04 0 104.12 34.31 152.87 70.99 146.71 9.60 ...
+            4.80 34.31 23.66 262.67 0 146.72 70.99]';
+       
+    % Oct 27, 2015 - Jan 19, 2016
+    elseif A.Amount(n) == 1470.42
+        
+        
+        B.Amount = [2366.40 287.03 56.71 104.12 33.49 143.51 118.32 143.20 9.60 ...
+            4.80 33.49 23.66 281.60 170.15 143.20 94.66]';
+
+    % Feb 2, 2016 - present
+    elseif floor(A.Amount(n)) == floor(1485.4)
+
+        B.Amount = [2396.80 292.07 60.04 105.46 33.88 145.51 119.84 144.88 9.75 ...
+            4.88 33.88 23.97 285.22 180.11 144.88 95.87]';
+        
+    % Percentage estimates based on Feb 2, 2016 information
+    else
+        
+        B.Amount = [2396.80 292.07 60.04 105.46 33.88 145.51 119.84 144.88 9.75 ...
+            4.88 33.88 23.97 285.22 180.11 144.88 95.87]';
+        B.Amount = B.Amount / 1485 * A.Amount(n);
+
     end
     
-    %     display(B); pause; clc;
-    
-    
-end;
-B(stopidx(end)+1:end, :) = [];
-T2 = [R; B];
-T2 = sortrows(T2, 'Date', 'descend');
+    T = [T; B]; % Add new line items to the original table
+
 
 end
+
+
+%%
+
+% Remove all Paycheck transactions
+T(strcmp(T.Category,'Paycheck'), :) = [];
+
+
+
+
+
+
+
+
+
+
+

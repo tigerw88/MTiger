@@ -20,18 +20,21 @@ title_str = sprintf('Monthly Spending/Income for: %s', strjoin(group_cat, ', '))
 for n = 1:numel(group_cat)
     
     % if the string exists as a category name
-    if sum(strncmp(group_cat{n}, trans.Category, 1))
+    if sum(strcmp(group_cat{n}, trans.Category))
         
         type = 'Category';
         spending(:, n) = monthlySpending( trans(strcmp(trans.Category, group_cat{n}), :), budget)';
-        
+           
         % elseif the string exists as a group name
-    elseif sum(strncmp(group_cat, trans.Group, 1))
+    elseif sum(strcmp(group_cat{n}, trans.Group))
         
         type = 'Group';
-        spending(:, n) = monthlySpending( trans(strcmp(trans.Group, group_cat{n}), :), budget);
-        spending(:, n) = sum(spending(:, n)); % for n categories, the initial result of spending is n-by-12; sum(spending) makes this a 1-by-12 vector
-        %     subcategorynames = budget.GroupCategories{strncmp(budget.Group,'Living',1)};
+        tmp = monthlySpending( trans(strcmp(trans.Group, group_cat{n}), :), budget);
+        if size(tmp,1)==1,
+            spending(:,n) = tmp;
+        else
+            spending(:, n) = sum(tmp);
+        end
         
     else
         
@@ -45,7 +48,7 @@ for n = 1:numel(group_cat)
     
 end
 
-bar(datenum(budget.BudgetDates), abs(spending), varargin{:});
+bar(datenum(budget.budget_dates), abs(spending), varargin{:});
 datetick('x'); % has no affect if datetime axis is replaced below
 
 % use datetime features for x axis
