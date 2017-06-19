@@ -1,6 +1,7 @@
 function T2 = assignBudgetGroup1(T, B)
-% ASSIGNBUDGETGROUP Creates a new column in the table that includes the
-% budget group.
+% ASSIGNBUDGETGROUP Creates a new column in the table of transactions that 
+% includes the budget group.
+%   Filters the transactions dates to the time period of the budget
 %
 % INPUT
 % + T - Table of transactions
@@ -9,6 +10,8 @@ function T2 = assignBudgetGroup1(T, B)
 %
 
 %%
+
+T = filterdates(B, T);
 
 EXPENSE = -1;
 INCOME = 1;

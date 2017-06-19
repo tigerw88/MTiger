@@ -1,42 +1,45 @@
 classdef Budget
     %BUDGET
     %
-    % see also BudgetGroup
+    % SEE ALSO BudgetGroup
 
-    
     properties
         
         name;
         start;
-        nmonths
+        nmonths;
         groups; % series of BudgetGroup objects
         
     end
     
     properties (Dependent)
         
+        stop; % last date for the budget period
         budget_dates;
         balance; % income - expenses; abs() of all budget group amounts
         balance_as_perc_income; % balance as a percent of all positive group amounts
+        duration_days;
         
     end
+    
+    %% Property Access methods
     
     methods
         
         
         function val = get.budget_dates(obj)
             
-           val = [obj.start obj.start + calmonths(1:obj.nmonths-1)];
+            val = [obj.start obj.start + calmonths(1:obj.nmonths-1)];
             
         end
         
         % get the budget's balance - abs() of all budget group amounts
         function val = get.balance(obj)
-           
+            
             val = 0;
             for n = 1:numel(obj.groups)
                 
-               val = val + obj.groups(n).amount;
+                val = val + obj.groups(n).amount;
                 
             end
             
@@ -46,19 +49,59 @@ classdef Budget
         % this could also be thought of as savings as a percent of all
         % income
         function val = get.balance_as_perc_income(obj)
-        
+            
             income = 0; % initialize value for all income (all positive amounts)
             for n = 1:numel(obj.groups)
-               
+                
                 if obj.groups(n).amount > 0;
                     income = income + obj.groups(n).amount;
                 end
                 
             end
             val = obj.balance / income;
-        
+            
         end
+        
+        % number of days for the budget
+        function val = get.duration_days(obj)
+            
+            val = datenum(obj.start + calmonths(obj.nmonths)) - datenum(obj.start);
+            
+        end
+        
+        % Last date for the budget period
+        function val = get.stop(obj)
+            
+           val = obj.start + obj.duration_days - 1; % -1 gives the last day of the budget period instead of the first day of the next budget period 
+            
+        end
+        
+        % get the amounts for each BudgetGroup returned as a vector
+        function val = get_amts(obj)
+            
+            for n = 1:numel(obj.groups)
+                
+                val(n) = obj.groups(n).amount;
+                
+            end
+            
+        end
+        
+        % get the name for each BudgetGroup returned as a cell array
+        function val = get_groupnames(obj)
+            
+            for n = 1:numel(obj.groups)
+                
+                val{n} = obj.groups(n).name;
+                
+            end
+            
+        end
+        
     end
+
+    
+%% Constructor Methods    
     
     methods
         
@@ -118,39 +161,25 @@ classdef Budget
             
         end
         
-        % Creates a pie chart of all budgeted income, expenses, and what's
-        % leftover
-        function pie(obj)
-            
-%             pieax = axes;
-            figure;
-            labels = {'Leftover', 'Expenses'};
-            
-            income = 0; expense = 0;
-            for n = 1:numel(obj.groups)
-                
-                if obj.groups(n).amount > 1,
-                    income = income +  obj.groups(n).amount;
-                elseif obj.groups(n).amount < 1,
-                    expense = expense + abs(obj.groups(n).amount);
-                end
-                
-            end
-            savings = income - expense;
-            pie([savings expense]);
-            colormap([0 1 0; 1 0 0])
-            legend(labels, ...
-                'Location','southoutside','Orientation','horizontal');
-            title({['Budget: ' obj.name]; ...
-                'Savings as a % of Income'; ...
-                ['Total Income: $' num2str(income)]});
-            
-            
-        end
-        
     end
     
     %%
+    
+    methods
+        
+       %
+       function T = filterdates( obj, T )
+           
+           % filter by date
+           t = obj.budget_dates;
+           idx.date = T.Date > t(1) & T.Date <= t(end);
+           T = T(idx.date, :);
+           fprintf('   Filtered to dates: %s - %s\n', ...
+               datestr(t(1)), datestr(t(end)));
+           
+       end
+        
+    end
     
 end
 

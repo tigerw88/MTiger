@@ -10,9 +10,17 @@ classdef TransactionList
         
     end
     
-    %% get/set methods
+    %% constructor/get/set methods
     
     methods
+        
+        % constructor method for the TransactionList class
+        function obj = TransactionList( table, budget)
+            
+            obj.T = table;
+            obj.B = budget;
+            
+        end
         
         % Sets a property for the transaction list
         function obj = set( obj, prop, input )
@@ -70,8 +78,9 @@ classdef TransactionList
             display(' ')
             display('List of Transactions from x to x')
             fprintf('   Grouped based on Budget: %s\n', obj.B.name)
-            display(obj.T)
-%             display(obj.B)
+            
+            obj.T = sortrows(obj.T, 'Date', 'descend');
+            obj.T(:, {'Date', 'Description', 'Amount', 'Group', 'Category'})
             
         end
         

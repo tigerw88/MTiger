@@ -7,12 +7,16 @@
 % 2. change the way RSAM is stored - it now stores it as a downsamples
 % waveform object.
 
+%% auto-preparation
+
+load('colors.mat')
+
 %% User Input
 
     % User defined tasks to complete
-createHelis = 1; % #ok<NASGU> #ok<MSNU> boolean
+createHelis = 0; % #ok<NASGU> #ok<MSNU> boolean
 saveHelis = 0; if saveHelis, createHelis = 1; end % #ok<UNRCH> boolean - savings requires creating
-rsamInterval = 0; % { 0 == do not create RSAM | n == n minute RSAM interval }
+rsamInterval = 10; % { 0 == do not create RSAM | n == n minute RSAM interval }
 mpl = 30;
 trace_color = colors.earthworm;
 
@@ -25,15 +29,12 @@ mkdir(['~/Desktop/RaungHelicorders/' tag.string '/'])
 ds = datasource('winston','localhost',16022);
 % ds = datasource('winston','192.168.0.130',16027);
 scnl = scnlobject(tag.station,tag.channel,tag.network,tag.location);
-tstart = datenum('2015/01/11 00:00:00');
-tstop = datenum('2015/01/11 00:00:00');
+tstart = datenum('2015/05/11 00:00:00');
+tstop = datenum('2015/05/12 00:00:00');
 
-
-%% auto-preparation
-
-load('colors.mat')
 rsam = waveform(); rsam = set(rsam, 'ChannelTag', tag); % initialize rsam object
 % w_all = waveform(); w_all = set(w_all, 'ChannelTag', tag); % initialize waveform object for all data
+
 
 %% run
 

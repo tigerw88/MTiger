@@ -8,7 +8,7 @@ Tall = importTransactions('/Users/jaywellik/GoogleDrive/transactions.csv'); % im
 M.MintCategoryNames = unique(Tall{:,'Category'});
 M.MintCategoryExpInc = double(size(M.MintCategoryNames)); % initialize variable to store whether or not category is an expense or income
 
-B = defineBudget2(); % create a budget
+B = defineBudget(); % create a budget
 % M.MintCategoryBudget = category2budgetCategoryMap(MintCategoryNames, B);
 
 T = filterTransactions(Tall); % narrow by date, remove reimbursable transactions, remove transfers, etc.

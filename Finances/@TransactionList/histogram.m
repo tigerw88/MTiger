@@ -1,5 +1,5 @@
 function h = histogram( obj )
-%THIST Histogram of transactions by amount
+%HISTOGRAM Histogram of transactions by amount
 %
 % >> histogram( T )
 % % histogram of transactions by amount

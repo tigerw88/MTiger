@@ -1,4 +1,4 @@
-function fh = multiplot( w )
+function fh = multiplot( w, varargin )
 
 fh = figure('Position', [100, 100, 1000, 525]);
 fh.PaperPositionMode = 'auto';
@@ -8,7 +8,7 @@ for n = 1:numel(w)
     
     pltn = pltn + 2;
     ax(n) = subplot(numel(w),2,pltn);
-    plot(w(n), 'xunit', 'date', 'Color', 'k', 'LineWidth', 0.8)
+    plot(w(n), 'xunit', 'date', varargin{:})
     
     
     td = TraceData(w(n));

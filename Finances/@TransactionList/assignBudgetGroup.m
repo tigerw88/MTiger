@@ -25,22 +25,22 @@ for n = 1:numel(B.groups) % for each group
     for k = 1:numel(B.groups(n).mint_cat) % for each category in the given group
     
         category_name = B.groups(n).mint_cat{k}; % get the category name
-        idx = (strcmp(T.Category, category_name)); % index of all transactions with this category name
-        T{idx, 'Group'} = strrep(T{idx, 'Group'}, 'Ungrouped', group_name); % change group name from 'Ungrouped' to the given group name
+        idx = (strcmp(T.T.Category, category_name)); % index of all transactions with this category name
+        T.T{idx, 'Group'} = strrep(T.T{idx, 'Group'}, 'Ungrouped', group_name); % change group name from 'Ungrouped' to the given group name
         
         % change amounts to negative or postive depending on whether or not
         % the group is an expense or an income
         if group_type==INCOME
-            T{idx, 'Amount'} = abs(T{idx, 'Amount'}); 
+            T.T{idx, 'Amount'} = abs(T.T{idx, 'Amount'}); 
         elseif group_type==EXPENSE
-            T{idx, 'Amount'} = -abs(T{idx, 'Amount'});
+            T.T{idx, 'Amount'} = -abs(T.T{idx, 'Amount'});
         end
             
         % Make exectpions to the EXPENSES==negative numbers,
         % INCOME==positive numbers rule
         if (strcmp(category_name, 'State Tax Refund') || ... % make sure tax refunds are positive values
-                strcmp(category_name,'Federal Tax Refund')); % make sure tax refunds are positive values
-            T{idx, 'Amount'} = abs(T{idx, 'Amount'});
+                strcmp(category_name,'Federal Tax Refund')) % make sure tax refunds are positive values
+            T.T{idx, 'Amount'} = abs(T.T{idx, 'Amount'});
         end
         
     end

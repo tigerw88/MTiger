@@ -1,4 +1,4 @@
-%% Personal Finance Analysis - Fiscal Year 2015/2016
+%% Personal Finance Analysis - Fiscal Year 2016/2017
 % This is a personal financial analysis from Oct 2015 to Sep 2016.
 
 %% Tracking Transactional Data
@@ -150,8 +150,9 @@ an absolute value so that it remains positive).
 % * *TOTAL_INCOME = SALARY + BENEFITS*
 %
 
-budgetReport(B, T);
-
+BR = budgetReport(B, T);
+figure; progress(B, BR)
+savingsMetrics
 
 %% SPECIALY REPORTS
 % 

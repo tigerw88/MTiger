@@ -6,8 +6,8 @@ function spending = plotMonthlySpending( trans, budget, group_cat, varargin )
 % INPUT
 % + trans - a table of transactions
 % + budget - a budget
-% + type - display a group or a category
 % + group_cat - the group or category that you wish to plot
+% + any other argument accepted by the BAR command
 %
 
 %% get spending amounts
@@ -23,13 +23,15 @@ for n = 1:numel(group_cat)
     if sum(strcmp(group_cat{n}, trans.Category))
         
         type = 'Category';
-        spending(:, n) = monthlySpending( trans(strcmp(trans.Category, group_cat{n}), :), budget)';
+        spending(:, n) = monthlySpending( trans(strcmp(trans.Category, ...
+            group_cat{n}), :), budget)';
            
         % elseif the string exists as a group name
     elseif sum(strcmp(group_cat{n}, trans.Group))
         
         type = 'Group';
-        tmp = monthlySpending( trans(strcmp(trans.Group, group_cat{n}), :), budget);
+        tmp = monthlySpending( trans(strcmp(trans.Group, ...
+            group_cat{n}), :), budget);
         if size(tmp,1)==1,
             spending(:,n) = tmp;
         else
@@ -38,7 +40,7 @@ for n = 1:numel(group_cat)
         
     else
         
-        error(['The string ''' group_cat ''' is neither a category nor a group in your transaction list.'])
+        error(['The string ''' group_cat{n} ''' is neither a category nor a group in your transaction list.'])
         
     end
     
@@ -49,7 +51,7 @@ for n = 1:numel(group_cat)
 end
 
 bar(datenum(budget.budget_dates), abs(spending), varargin{:});
-datetick('x'); % has no affect if datetime axis is replaced below
+datetick('x', 'yyyy/mm'); % has no affect if datetime axis is replaced below
 
 % use datetime features for x axis
 % ax = gca;

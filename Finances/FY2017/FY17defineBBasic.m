@@ -23,7 +23,8 @@ BBasic = addGroup( BBasic, 'Other', -60000*0.27, ...
     'Auto Insurance', 'Service & Parts', 'Car Fees', ...
     'Air Travel', 'Rental Car & Taxi', 'Travel'});
 BBasic = addGroup( BBasic, 'Salary', 60000, {'Paycheck', 'Salary'});
-BBasic = addGroup( BBasic, 'Other Income', 0, {'Income', 'Interest Income', 'Gift Received'});
+BBasic = addGroup( BBasic, 'Other Income', 0, {'Income', ...
+    'Interest Income', 'Gift Received'});
 BBasic = addGroup( BBasic, 'Per Diem', 0, {'Per Diem'});
 BBasic = addGroup( BBasic, 'Savings', 0, {'TSP'});
 BBasic = addGroup( BBasic, 'Benefits', 60000*0.0395, {'TSP Matched'});

@@ -11,7 +11,8 @@
 tic
 
 %% Initialize variables.
-filename = '/Volumes/EFIS_seis/share/jiggle_all_04_13.csv';
+% filename = '/Volumes/EFIS_seis/share/jiggle_all_04_13.csv';
+filename = '/Users/jaywellik/Downloads/jiggle_all_04_13.txt';
 delimiter = {',',''''};
 startRow = 2;
 

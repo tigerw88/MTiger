@@ -1,6 +1,9 @@
 function h = histogram2( obj )
-%WEIGHTEDHISTOGRAM Creates a histogram that also shows the percentage of
+%HISTOGRAM2 Creates a histogram that also shows the percentage of
 % the total that each bin represents
+%
+% >> histogram2( T )
+%
 
 %%
 

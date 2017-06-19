@@ -10,9 +10,12 @@ classdef BudgetGroup
         mint_cat;
         
     end
+
+%% Constructor Methods    
     
     methods
         
+        % Constructor methods for BudgetGroup
         function obj = BudgetGroup(name, amount, categories)
         
             obj.name = name;
@@ -22,6 +25,9 @@ classdef BudgetGroup
         end
             
     end
+    
+    
+%% Display and View Methods
     
     methods
         
